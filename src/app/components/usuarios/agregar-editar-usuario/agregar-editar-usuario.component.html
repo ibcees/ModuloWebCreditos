@@ -1,0 +1,44 @@
+<div class="title">
+    <h1>{{opcion}} Usuario</h1>
+</div>
+<app-spinner *ngIf="loading"></app-spinner>
+<div class="container">
+    <mat-card>
+        <mat-card-subtitle>
+            Datos del usuario
+        </mat-card-subtitle>
+        <p>Agregue los datos del usuario</p>
+        <form [formGroup]="form" (ngSubmit)="agregarModificarUsuario()"> 
+            <mat-grid-list cols="2" rowHeight="100px">
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre</mat-label>
+                        <input formControlName="nombre" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Usuario</mat-label>
+                        <input formControlName="usuario1" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Correo</mat-label>
+                        <input formControlName="correo" matInput autocomplete="off">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Contraseña</mat-label>
+                        <input formControlName="contraseña" matInput autocomplete="off" type="password">
+                    </mat-form-field>
+                </mat-grid-tile>
+                <mat-grid-tile [colspan]="2">
+                    <button [disabled]="form.invalid" type="submit" class="btnAceptar" mat-raised-button color="primary">Aceptar</button>
+                    <button mat-raised-button routerLink="/Usuarios">Volver</button>
+                </mat-grid-tile>
+            </mat-grid-list>    
+        </form>
+    </mat-card>
+</div>
