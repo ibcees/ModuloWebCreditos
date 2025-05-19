@@ -1,5 +1,11 @@
 <div class="title">
-    <h1>{{opcion}} Usuario</h1>
+    <img src="/assets/img/logo-becas-white.svg" alt="Logo" class="logoMenu">
+    <h1 class="text">{{opcion}} Usuario</h1>
+    <div *ngIf="usuarioAute">
+        <button mat-button routerLink="/acreditados">Créditos</button>
+        <button mat-button routerLink="/solicitudes">Solicitudes</button>
+        <button mat-button (click)="logout()">Salir</button>
+    </div>
 </div>
 <app-spinner *ngIf="loading"></app-spinner>
 <div class="container">
@@ -9,7 +15,7 @@
         </mat-card-subtitle>
         <p>Agregue los datos del usuario</p>
         <form [formGroup]="form" (ngSubmit)="agregarModificarUsuario()"> 
-            <mat-grid-list cols="2" rowHeight="100px">
+            <mat-grid-list cols="2" rowHeight="80px">
                 <mat-grid-tile>
                     <mat-form-field appearance="outline">
                         <mat-label>Nombre</mat-label>
@@ -34,9 +40,22 @@
                         <input formControlName="contraseña" matInput autocomplete="off" type="password">
                     </mat-form-field>
                 </mat-grid-tile>
+
+                <mat-grid-tile [colspan]="2" *ngIf="!esRegistro || usuarioAute">
+                    <mat-form-field appearance="outline" style="width: 70%;">
+                      <mat-label>Rol</mat-label>
+                      <mat-select formControlName="rol" required>
+                        <mat-option *ngFor="let rol of roles" [value]="rol.value">
+                          {{ rol.viewValue }}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                </mat-grid-tile>
+                                           
+
                 <mat-grid-tile [colspan]="2">
                     <button [disabled]="form.invalid" type="submit" class="btnAceptar" mat-raised-button color="primary">Aceptar</button>
-                    <button mat-raised-button routerLink="/Usuarios">Volver</button>
+                    <button mat-raised-button [routerLink]="volverLink">Volver</button>
                 </mat-grid-tile>
             </mat-grid-list>    
         </form>

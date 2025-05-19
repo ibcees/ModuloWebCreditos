@@ -2,9 +2,14 @@ table{
     width:100%;
 }
 
-
 td,th{
     width:5%;
+}
+
+.encabezado{
+    font-weight: bold;
+    background-color: #cea7b2;
+    
 }
 
 .mat-mdc-form-field {
@@ -23,4 +28,130 @@ td,th{
     cursor:pointer;
     color:firebrick;
     padding: 4%;
+}
+
+.mat-mdc-button:not(:disabled) {
+    color: white;
+}
+
+
+/* ===== ESTILOS BASE (MANTENIENDO TU DISEÑO) ===== */
+table {
+    width: 100%;
+}
+
+td, th {
+    width: 5%;
+}
+
+.mat-mdc-form-field {
+    font-size: 14px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.edit {
+    cursor: pointer;
+    color: gold;
+    padding: 4%;
+}
+
+.delete {
+    cursor: pointer;
+    color: firebrick;
+    padding: 4%;
+}
+
+.mat-mdc-button:not(:disabled) {
+    color: white;
+}
+
+
+/* ===== MEDIA QUERIES PARA RESPONSIVIDAD ===== */
+/* Tabletas pequeñas y móviles grandes (577px - 768px) */
+@media (max-width: 768px) {
+    .mat-mdc-form-field {
+        font-size: 12px;
+        margin-top: 12px;
+    }
+    
+    .table-responsive-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+    
+    table {
+        min-width: 600px; /* Mantiene el ancho mínimo para no comprimir demasiado */
+    }
+    
+    td, th {
+        font-size: 11px;
+        padding: 5px 8px;
+    }
+    
+    .edit, .delete {
+        padding: 2%;
+        font-size: 11px;
+    }
+}
+
+/* Móviles (hasta 480px) */
+@media (max-width: 480px) {
+    .mat-mdc-form-field {
+        font-size: 11px;
+        margin-top: 10px;
+        width: 90%;
+    }
+    
+    table {
+        width: 40%;
+    }
+    
+    td, th {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
+    
+    .edit, .delete {
+        padding: 1.5%;
+        font-size: 10px;
+    }
+    
+    .action-buttons {
+        white-space: nowrap;
+    }
+
+    .logoMenu{
+        margin:2px;
+        width: 100px;
+        align-items: left;
+    }
+    .text{
+        font-size: 16px;
+        margin-left: 40%;
+        flex-grow: 1;
+    }
+
+    .mat-mdc-button{
+        font-size: 11px;
+        margin: 1px;
+    }
+
+    .container{
+        width: 80%;
+        overflow-x: auto;
+      }
+    
+      .container::-webkit-scrollbar {
+        height: 6px;
+      }
+      
+      .container::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 10px;
+      }
+    
 }

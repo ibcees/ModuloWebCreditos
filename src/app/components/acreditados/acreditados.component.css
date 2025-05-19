@@ -1,0 +1,215 @@
+.mat-mdc-button:not(:disabled) {
+    color: white;
+}
+
+.fila-total {
+    font-weight: bold;
+    background-color: #e9e9e9;
+    border-top: 2px solid #ccc;
+  }
+
+.fila-grupo {
+    font-weight: bold;
+    background-color: #f1f1f1;
+    border-top: 2px solid #ddd; 
+}
+
+td.mat-cell:empty {
+visibility: hidden;
+}
+
+.mat-footer-row {
+    display: none;
+}
+
+.encabezado{
+    font-weight: bold;
+    background-color: #cea7b2;
+}
+
+mat-card-subtitle{
+    margin-top:20px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+mat-form-field {
+    margin: 5px;
+    margin-top:15px;
+    height: 70px;
+    width: 42%;
+    font-size: 14px !important
+}
+
+table{
+    width:20%;
+}
+
+.mat-mdc-table {
+    max-width: 250px;
+    border: 0;
+    border-spacing: 0;
+    table-layout: auto;
+    margin-top: 10px;
+}
+
+.tablaBen{
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+}
+
+/* Centrar el calendario */
+.custom-datepicker .cdk-overlay-pane {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 1000 !important;
+}
+
+.mat-datepicker-content-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+::ng-deep .mat-datepicker-popup {
+    position: fixed !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+}
+
+.example-button-row{
+    margin-top:20px;
+    float: right;
+}
+
+.mdc-data-table__row,.mat-mdc-header-row{
+    height: 26px;
+    font-size: 11px;
+}
+
+.image-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+.exportTablas{
+    margin:10px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 8px;
+}
+
+/* ===== MEDIA QUERIES PARA DISPOSITIVOS MÓVILES ===== */
+ /* Ajustes para móviles (768px y menos) */
+@media (max-width: 768px) {
+    /* Contenedor principal automático */
+    .container {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 10px 5px;
+    }
+  
+    /* Tabla responsiva */
+    table {
+      min-width: 650px; /* Ancho mínimo para mantener estructura */
+      width: auto !important;
+      margin: 0 auto;
+      display: block;
+    }
+  
+    /* Mejorar legibilidad */
+    .mat-mdc-table {
+      font-size: 12px;
+    }
+  
+    .mdc-data-table__row, .mat-mdc-header-row {
+      height: 28px;
+    }
+  
+    td.mat-cell, th.mat-header-cell {
+      padding: 6px 10px;
+      min-width: 60px; /* Evita colapsar columnas */
+    }
+  
+    /* Encabezados */
+    mat-card-subtitle {
+      font-size: 14px;
+      margin: 10px 0 6px;
+      white-space: normal;
+      word-break: break-word;
+      padding: 0 8px;
+    }
+  
+    /* Botones */
+    .exportTablas {
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 15px 0;
+    }
+  
+    .image-button img {
+      width: 18px;
+      height: 18px;
+    }
+  }
+  
+  /* Ajustes para móviles pequeños (480px) */
+  @media (max-width: 480px) {
+    table {
+      min-width: 580px;
+    }
+  
+    .mat-mdc-table {
+      font-size: 11px;
+    }
+  
+    td.mat-cell, th.mat-header-cell {
+      padding: 4px 8px;
+    }
+  
+    mat-card-subtitle {
+      font-size: 14px;
+      margin: 8px 0 4px;
+    }
+
+    .logoMenu{
+        margin:2px;
+        width: 100px;
+        align-items: left;
+    }
+    .text{
+        font-size: 16px;
+        margin-left: 40%;
+        flex-grow: 1;
+    }
+
+    .mat-mdc-button{
+        font-size: 11px;
+        margin: 1px;
+    }
+
+    .tablaBen, .tablAcred{
+      width: 80%;
+      overflow-x: auto;
+    }
+  
+    .tablaBen::-webkit-scrollbar, .tablAcred::-webkit-scrollbar {
+      height: 6px;
+    }
+    
+    .tablaBen::-webkit-scrollbar-thumb, .tablAcred::-webkit-scrollbar-thumb {
+      background: #ccc;
+      border-radius: 10px;
+    }
+  }

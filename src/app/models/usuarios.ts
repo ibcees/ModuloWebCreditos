@@ -3,6 +3,6 @@
     nombre: string,
     usuario1: string,
     correo: string,
-    contraseña: string
-
+    contraseña: string,
+    rol:string
  }

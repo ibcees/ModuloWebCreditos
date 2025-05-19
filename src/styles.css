@@ -4,18 +4,39 @@ body {
 
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: 'Roboto', sans-serif;
 }
 
 .title {
-  padding: 30px;
+  display: flex;                /* Usamos flexbox para alinear los elementos en línea */
+  justify-content: center;      /* Centra los elementos horizontalmente en el contenedor */
+  align-items: center;          /* Alinea verticalmente los elementos en el contenedor */
+  padding: 11px;
   background-color: #960E53;
-  text-align: center;
   color: white;
+  font-size: 16px;
 }
 
+.logoMenu {
+  width: 220px;                 /* Ajusta el tamaño del logo según sea necesario */          
+  position: absolute;           /* Hace que el logo no afecte el texto centrado */
+  left: 30px;                   /* Alinea el logo a la izquierda */
+  margin:20px;
+}
+
+.text {
+  margin-left: 15%;
+  text-align: center;           /* Centra el texto dentro del contenedor */
+  flex-grow: 1 ;                  /* Permite que el texto ocupe el espacio restante */
+}
 .container {
-  margin: 0 20%
+  margin: 0 17%;
+  margin-top: 15px;
+}
+
+tr.mat-mdc-footer-row td {
+  font-weight: bold;
 }
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+

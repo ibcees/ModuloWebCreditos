@@ -1,18 +1,22 @@
-import { Component, AfterViewInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, ViewChild, Injectable } from '@angular/core';
 import { Usuarios } from '../../models/usuarios';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { SharedModule } from '../../shared/shared.module';
 import { UsuarioServiceService } from '../../services/usuario-service.service';
 
 //angular material
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 import { HttpClientModule } from '@angular/common/http';
+import { CustomPaginatorIntl } from '../../customPag';
 
+@Injectable({
+  providedIn: 'root'
+})
 
 @Component({
   selector: 'app-usuarios',
@@ -20,19 +24,22 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [SharedModule, MatSort, MatPaginator, RouterModule,HttpClientModule],
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.css'],
-  providers:[UsuarioServiceService]
+  providers:[UsuarioServiceService, { provide: MatPaginatorIntl, useClass: CustomPaginatorIntl }]
 })
 
 export class UsuariosComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'nombre', 'usuario', 'correo', 'acciones'];
+  displayedColumns: string[] = ['id', 'nombre', 'usuario', 'correo','rol', 'acciones'];
   dataSource = new MatTableDataSource<Usuarios>();
   loading: boolean =false;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  
 
 constructor(private _snackBar : MatSnackBar, 
-  private _usuarioService:UsuarioServiceService){
+  private _usuarioService:UsuarioServiceService,
+  private router: Router
+){
 
 }
 
@@ -48,6 +55,11 @@ ngOnInit(): void {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  logout() {
+    localStorage.removeItem('usuario1');
+    this.router.navigate(['/inicioSesion']);
   }
 
   obtenerUsuarios(){
@@ -67,6 +79,7 @@ ngOnInit(): void {
       horizontalPosition:'right',
     });
   }
+  
   borrarUsuario(id: number) {
   this.loading = true;
   console.log(`Intentando eliminar usuario con ID: ${id}`);
@@ -84,5 +97,6 @@ ngOnInit(): void {
       alert(`Error al eliminar usuario: ${error.message}`);
     }
   });
+
 }
 }

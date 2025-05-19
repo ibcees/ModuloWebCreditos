@@ -1,5 +1,9 @@
 <div class="title">
-    <h1>Usuarios</h1>
+    <img src="/assets/img/logo-becas-white.svg" alt="Logo" class="logoMenu">
+    <h1 class="text">Usuarios</h1>
+    <button mat-button routerLink="/acreditados">Créditos</button>
+    <button mat-button routerLink="/solicitudes">Solicitudes</button>
+    <button mat-button (click)="logout()">Salir</button>
 </div>
 <div class="spinner-container">
     <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
@@ -12,34 +16,43 @@
 
     <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z5">
         <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by number"> ID </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header 
+            sortActionDescription="Sort by number" class="encabezado"> ID </th>
             <td mat-cell *matCellDef="let element"> {{element.id}} </td>
         </ng-container>
 
         <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by name"> Nombre </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header 
+            sortActionDescription="Sort by name" class="encabezado"> Nombre </th>
         <td mat-cell *matCellDef="let element"> {{element.nombre}} </td>
         </ng-container>
 
         <ng-container matColumnDef="usuario">
-            <th mat-header-cell *matHeaderCellDef> Usuario </th>
+            <th mat-header-cell *matHeaderCellDef class="encabezado"> Usuario </th>
             <td mat-cell *matCellDef="let element"> {{element.usuario1}} </td>
         </ng-container>
 
         <ng-container matColumnDef="correo">
-            <th mat-header-cell *matHeaderCellDef> Correo </th>
+            <th mat-header-cell *matHeaderCellDef class="encabezado"> Correo </th>
             <td mat-cell *matCellDef="let element"> {{element.correo}} </td>
         </ng-container>
 
+        <ng-container matColumnDef="rol">
+            <th mat-header-cell *matHeaderCellDef class="encabezado"> Rol </th>
+            <td mat-cell *matCellDef="let element"> {{element.rol}} </td>
+        </ng-container>
+          
         <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef> 
-                <button routerLink="/agregarUsuario" matTooltip="Agregar Usuario" mat-raised-button>Agregar</button>
+            <th mat-header-cell *matHeaderCellDef class="encabezado"> 
+                <button routerLink="/agregarUsuario" matTooltip="Agregar Usuario" 
+                mat-raised-button>Agregar</button>
             </th>
             <td mat-cell *matCellDef="let element"> 
                 <a [routerLink]="['/modificarUsuario', element.id]" matTooltip="Modificar Usuario">
                     <mat-icon class="edit">edit</mat-icon>
                 </a>
-                <mat-icon (click)="borrarUsuario(element.id)" matTooltip="Eliminar Usuario" class="delete" fontIcon="delete"></mat-icon>
+                <mat-icon (click)="borrarUsuario(element.id)" matTooltip="Eliminar Usuario" class="delete" 
+                fontIcon="delete"></mat-icon>
             </td>
         </ng-container>
     

@@ -1,4 +1,303 @@
 <div class="title">
-    <h1>Solicitudes</h1>
+    <img src="/assets/img/logo-becas-white.svg" alt="Logo" class="logoMenu">
+    <h1 class="text">Solicitudes de Crédito</h1>
+    <button mat-button routerLink="/acreditados">Créditos</button>
+    <button *ngIf="rolUsuario !== 'asistente'" mat-button routerLink="/Usuarios">Usuarios</button>
+    <button mat-button (click)="logout()">Salir</button>
 </div>
-<div class="container"></div>
+<div class="spinner-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div>
+<div class="container2">
+    <mat-card-subtitle>
+        Solicitudes de crédito
+    </mat-card-subtitle>
+    <div id="tabla-imprimir">
+    <div class="mismaLinea">
+        <p>{{ soliTitle }}</p>
+        <div class="SolRenovacion">
+            <div class="filtros">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Fecha Estatus Hasta</mat-label>
+                    <input matInput [matDatepicker]="picker1" [value]="fechaEstatusHasta" 
+                    (dateChange)="fechaEstatusHasta = $event.value" [min]="fechaMinima" [max]="fechaMaxima">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                
+                <button mat-raised-button color="primary" (click)="filtrarFechas()">
+                    <mat-icon>search</mat-icon> Filtrar
+                </button>
+            </div>
+    
+            <table mat-table [dataSource]="tranRenovacion" class="mat-elevation-z8">
+                <ng-container matColumnDef="estatusDescripcion">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Estatus </th>
+                <td mat-cell *matCellDef="let transaction" >{{ transaction.estatusDescripcion }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> Total general </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="totalSolicitudes">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Solicitudes </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.totalSolicitudes }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalReno() }} </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="renoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: renoColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="renoColumns"></tr>
+            </table>          
+        
+
+            <div class="tablaImp">
+                <p class="importe-title">{{ impTitle }}</p>
+                <div class="mat-elevation-z8">
+                  <table mat-table [dataSource]="tranImp" matSort #sort1="matSort">
+                    <!-- Columna Tipo de Evaluación -->
+                    <ng-container matColumnDef="tipoEvaluacion">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Tipo de Evaluación</th>
+                      <td mat-cell *matCellDef="let element" [class.group-row]="element.esFilaGrupo">
+                        {{element.tipoEvaluacion}}</td>
+                    </ng-container>
+              
+                    <!-- Columna Tipo de Crédito -->
+                    <ng-container matColumnDef="tipoCredito">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Tipo de Crédito</th>
+                      <td mat-cell *matCellDef="let element" [class.indented-cell]="!element.esFilaGrupo">
+                        {{element.tipoCredito}}</td>
+                    </ng-container>
+              
+                    <!-- Columna Beneficiarios -->
+                    <ng-container matColumnDef="beneficiarios">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Beneficiarios</th>
+                      <td mat-cell *matCellDef="let element" [class.indented-cell]="!element.esFilaGrupo">
+                        {{element.beneficiarios | number}}</td>
+                    </ng-container>
+              
+                    <!-- Columna Contratos -->
+                    <ng-container matColumnDef="contratos">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Contratos</th>
+                      <td mat-cell *matCellDef="let element" [class.indented-cell]="!element.esFilaGrupo">
+                        {{element.contratos | number}}</td>
+                    </ng-container>
+              
+                    <!-- Columna Importe -->
+                    <ng-container matColumnDef="importe">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Importe</th>
+                      <td mat-cell *matCellDef="let element" [class.indented-cell]="!element.esFilaGrupo">
+                        {{element.importe | currency}}</td>
+                    </ng-container>
+              
+                    <!-- Filas -->
+                    <tr mat-header-row *matHeaderRowDef="credColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: credColumns" [class.group-row]="row.esFilaGrupo"></tr>
+                  </table>
+                </div>
+              </div>
+        </div>       
+    </div>
+
+
+    <div class="mismaLinea2">
+        <div class="SolNueva">
+            <p>{{ nuevaTitle }}</p>
+            <div class="filtros">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Fecha Estatus Desde</mat-label>
+                    <input matInput [matDatepicker]="picker2" [value]="fechaEstatusNueva" 
+                        (dateChange)="fechaEstatusNueva = $event.value" [min]="fechaMinima" [max]="fechaMaxima">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="filtrarFechas()">
+                    <mat-icon>search</mat-icon> Filtrar
+                </button>
+            </div>            
+
+            <table mat-table [dataSource]="tranNuevas" class="mat-elevation-z8">
+                <ng-container matColumnDef="estatusDescripcion">
+                    <th mat-header-cell *matHeaderCellDef class="encabezado"> Estatus </th>
+                    <td mat-cell *matCellDef="let transaction">{{ transaction.estatusDescripcion }}</td>
+                    <td mat-footer-cell *matFooterCellDef class="fila-total"> Total general </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="totalSolicitudes">
+                    <th mat-header-cell *matHeaderCellDef class="encabezado"> Solicitudes </th>
+                    <td mat-cell *matCellDef="let transaction">{{ transaction.totalSolicitudes }}</td>
+                    <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalNueva() }} </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="renoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: renoColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="renoColumns"></tr>
+            </table>
+
+            <p class="importe-title">Importe estimado de un solo contrato en el periodo de 5 entregas de 3500</p>
+            <table mat-table [dataSource]="tranNuevas" class="mat-elevation-z8">
+                <ng-container matColumnDef="estatusDescripcion">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Estatus </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.estatusDescripcion }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> Total general </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="totalSolicitudes">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Solicitudes </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.totalSolicitudes }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalNueva() }} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="importeEstimado">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Importe Estimado </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.importeEstimado | currency }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalImporte() | currency }} </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="importeColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: importeColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="importeColumns"></tr>
+            </table>
+        </div>
+
+        <div class="SolNoReno">
+            <p>{{ noRenoTitle }}</p>
+            <div class="filtros">
+                <mat-form-field class="example-full-width">
+                    <mat-label>Fecha Estatus Desde</mat-label>
+                    <input matInput [matDatepicker]="picker3" [value]="fechaEstatusNoR" 
+                        (dateChange)="fechaEstatusNoR = $event.value" [min]="fechaMinima" [max]="fechaMaxima">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+                <button mat-raised-button color="primary" (click)="filtrarFechas()">
+                    <mat-icon>search</mat-icon> Filtrar
+                </button>
+            </div>
+
+        
+            <table mat-table [dataSource]="tranNoReno" class="mat-elevation-z8">
+                <ng-container matColumnDef="estatusDescripcion">
+                    <th mat-header-cell *matHeaderCellDef class="encabezado"> Estatus </th>
+                    <td mat-cell *matCellDef="let transaction">{{ transaction.estatusDescripcion }}</td>
+                    <td mat-footer-cell *matFooterCellDef class="fila-total"> Total general </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="totalSolicitudes">
+                    <th mat-header-cell *matHeaderCellDef class="encabezado"> Solicitudes </th>
+                    <td mat-cell *matCellDef="let transaction">{{ transaction.totalSolicitudes }}</td>
+                    <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalNoReno() }} </td>
+                </ng-container>
+                
+                <tr mat-header-row *matHeaderRowDef="renoColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: renoColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="renoColumns"></tr>
+            </table>
+
+            <p class="importe-title">Importe estimado de un solo contrato en el periodo de 5 entregas de 3500</p>
+            <table mat-table [dataSource]="tranNoReno" class="mat-elevation-z8">
+                <ng-container matColumnDef="estatusDescripcion">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Estatus </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.estatusDescripcion }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> Total general </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="totalSolicitudes">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Solicitudes </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.totalSolicitudes }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalNoReno() }} </td>
+                </ng-container>
+            
+                <ng-container matColumnDef="importeEstimado">
+                <th mat-header-cell *matHeaderCellDef class="encabezado"> Importe Estimado </th>
+                <td mat-cell *matCellDef="let transaction">{{ transaction.importeEstimado | currency }}</td>
+                <td mat-footer-cell *matFooterCellDef class="fila-total"> {{ getTotalImpNR() | currency }} </td>
+                </ng-container>
+            
+                <tr mat-header-row *matHeaderRowDef="importeColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: importeColumns;"></tr>
+                <tr mat-footer-row *matFooterRowDef="importeColumns"></tr>
+            </table>
+        </div>
+    </div>
+    </div>
+
+    <div class="tablaSoli">
+        <button mat-flat-button color="primary" (click)="mostrarTabla()">
+            Mostrar Solicitudes
+          </button>
+        
+          <div [hidden]="!mostrarTablaFlag">
+            <mat-form-field class="filtro-item">
+              <mat-label>Fecha Estatus Desde</mat-label>
+              <input matInput [matDatepicker]="picker4" [value]="fechaEstatusDesde" 
+                        (dateChange)="fechaEstatusDesde = $event.value" [min]="fechaMinima" [max]="fechaMaxima">
+              <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+              <mat-datepicker #picker4></mat-datepicker>
+            </mat-form-field>
+        
+            <mat-form-field class="filtro-item">
+              <mat-label>IDs de Estatus (separados por comas)</mat-label>
+              <input matInput [(ngModel)]="estatusSolicitudIds" 
+                placeholder="Ej: 1,2,3" #inputEstatus autocomplete="off">
+            </mat-form-field>
+        
+            <button mat-raised-button color="primary" (click)="filtrarFechas()" class="btnFilLim">
+              <mat-icon>search</mat-icon> Filtrar
+            </button>
+        
+            <button mat-raised-button color="warn" (click)="limpiarFiltros()" class="btnFilLim">
+              <mat-icon>clear</mat-icon> Limpiar
+            </button>
+        
+          <table mat-table [dataSource]="dataSolicitud" matSort #sort2="matSort" class="mat-elevation-z5">
+            <ng-container matColumnDef="expr1">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">ID Solicitud</th>
+              <td mat-cell *matCellDef="let element">{{element.expr1}}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="expediente">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Expediente</th>
+              <td mat-cell *matCellDef="let element">{{element.expediente}}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="nombre_Solicitante">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Nombre</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.nombre_Solicitante}} {{element.paterno}} {{element.materno}}
+              </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="tipoSolicitud">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Tipo</th>
+              <td mat-cell *matCellDef="let element">{{element.tipoSolicitud}}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="estatusDescripcion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Estatus</th>
+              <td mat-cell *matCellDef="let element">{{element.estatusDescripcion}}</td>
+            </ng-container>
+      
+            <ng-container matColumnDef="fechaEstatus">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header class="encabezado">Fecha</th>
+              <td mat-cell *matCellDef="let element">
+                {{element.fechaEstatus | date:'dd/MM/yyyy'}}
+              </td>
+            </ng-container>
+      
+            <tr mat-header-row *matHeaderRowDef="soliColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: soliColumns;"></tr>
+          </table>
+      
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]"  [length]="dataSolicitud.data.length"
+          showFirstLastButtons></mat-paginator>
+        </div>
+    </div>
+    <div class="exportTablas">
+        <button (click)="exportarExcel()" class="image-button">
+          <img src="/assets/img/logo-excel.png" alt="logo-exc">
+        </button> 
+    
+        <button (click)="imprimir()" class="image-button">
+          <img src="/assets/img/logo-imprimir.png" alt="logo-imp">
+        </button> 
+    </div>
+</div>

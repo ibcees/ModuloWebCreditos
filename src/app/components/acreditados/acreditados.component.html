@@ -1,4 +1,149 @@
 <div class="title">
-    <h1>Acreditados</h1>
+    <img src="/assets/img/logo-becas-white.svg" alt="Logo" class="logoMenu">
+    <h1 class="text">Créditos</h1>
+    <button mat-button routerLink="/solicitudes">Solicitudes</button>
+    <button *ngIf="rolUsuario !== 'asistente'" mat-button routerLink="/Usuarios">Usuarios</button>
+    <button mat-button (click)="logout()">Salir</button>
 </div>
-<div class="container"></div>
+
+<div class="spinner-container">
+    <mat-progress-bar *ngIf="loading" mode="indeterminate"></mat-progress-bar>
+</div>
+
+<div class="container">
+    <mat-card-subtitle>
+        Consulta de acreditados
+    </mat-card-subtitle>
+    <div class="date-filter">
+        <mat-form-field class="example-full-width">
+            <mat-label>Fecha Inicial</mat-label>
+            <input matInput [matDatepicker]="picker1" [value]="fechaInicial" 
+            (dateChange)="fechaInicial = $event.value" [min]="fechaMinima" [max]="fechaMaxima">
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        
+        <mat-form-field class="example-full-width">
+            <mat-label>Fecha Final</mat-label>
+            <input matInput [matDatepicker]="picker2" [value]="fechaFinal" 
+            (dateChange)="fechaFinal = $event.value" [min]="fechaMinima" [max]="fechaMaxima">
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>        
+
+        <button mat-raised-button color="primary" (click)="filtrarFechas()">
+            Filtrar
+        </button>
+    </div>
+    <div id="tabla-imprimir">
+      <div class="tablaBen">
+        <p>{{ creditosTitle }}</p>
+        <div class="mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource2" matSort #sort1="matSort">
+            <ng-container matColumnDef="tipoEvaluacion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Tipo de Evaluación </th>
+              <td mat-cell *matCellDef="let element" [class.fila-grupo]="element.esFilaGrupo">
+                {{element.tipoEvaluacion}} 
+              </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="tipoCredito">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Tipo de Crédito </th>
+              <td mat-cell *matCellDef="let element" [class.fila-grupo]="element.esFilaGrupo">
+                {{element.tipoCredito}} 
+              </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="beneficiarios">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Beneficiarios </th>
+              <td mat-cell *matCellDef="let element" [class.fila-grupo]="element.esFilaGrupo">
+                {{element.beneficiarios | number}} 
+              </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="contratos">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Contratos </th>
+              <td mat-cell *matCellDef="let element" [class.fila-grupo]="element.esFilaGrupo">
+                {{element.contratos | number}} 
+              </td>
+            </ng-container>
+            
+            <ng-container matColumnDef="importe">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Importe </th>
+              <td mat-cell *matCellDef="let element" [class.fila-grupo]="element.esFilaGrupo">
+                {{element.importe | currency}} 
+              </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="credColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: credColumns;"></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <div class="tablAcred">
+      <button mat-flat-button (click)="mostrarTabla()">Mostrar Acreditados</button>
+      <div [hidden]="!mostrarTablaFlag">
+        <!-- Tabla de acreditados -->
+          <table mat-table [dataSource]="dataSource" matSort #sort2="matSort"class="mat-elevation-z5">
+            <ng-container matColumnDef="expediente">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Expediente </th>
+              <td mat-cell *matCellDef="let element"> {{element.expediente}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="nombre_Acreditado">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Nombre </th>
+              <td mat-cell *matCellDef="let element"> {{element.nombre_Acreditado}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="tipoCredito">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Tipo de Crédito </th>
+              <td mat-cell *matCellDef="let element"> {{element.tipoCredito}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="capital">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Capital </th>
+              <td mat-cell *matCellDef="let element"> {{element.capital | currency}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="fechaAsignacion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Fecha de Asignación </th>
+              <td mat-cell *matCellDef="let element"> {{element.fechaAsignacion | date:'dd/MM/yyyy'}} </td>
+            </ng-container>
+      
+            <ng-container matColumnDef="fechaAutorizacion">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header 
+              sortActionDescription="Sort by number" class="encabezado"> Fecha de Autorización </th>
+              <td mat-cell *matCellDef="let element"> {{element.fechaAutorizacion | date:'dd/MM/yyyy'}} </td>
+            </ng-container>
+    
+          <tr mat-header-row *matHeaderRowDef="acredColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: acredColumns;"></tr>
+        </table>
+
+        <!-- Paginador -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]"  [length]="dataSource2.data.length"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </div>   
+    <div class="exportTablas">
+      <button (click)="exportExcel()" class="image-button">
+        <img src="/assets/img/logo-excel.png" alt="logo-exc">
+      </button> 
+  
+      <button (click)="imprimirCred()" class="image-button">
+        <img src="/assets/img/logo-imprimir.png" alt="logo-imp">
+      </button> 
+    </div>
+</div>

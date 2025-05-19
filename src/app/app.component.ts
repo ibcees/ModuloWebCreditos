@@ -7,7 +7,6 @@ import { SolicitudesComponent } from './components/solicitudes/solicitudes.compo
 import { AcreditadosComponent } from './components/acreditados/acreditados.component';
 import { UsuariosComponent } from './components/usuarios/usuarios.component';
 import { AgregarEditarUsuarioComponent } from './components/usuarios/agregar-editar-usuario/agregar-editar-usuario.component';
-import { ɵBrowserAnimationBuilder } from '@angular/animations';
 
 @Component({
   selector: 'app-root',

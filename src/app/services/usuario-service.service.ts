@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuarios } from '../models/usuarios';
 import { AgregarEditarUsuarioComponent } from '../components/usuarios/agregar-editar-usuario/agregar-editar-usuario.component';
@@ -14,13 +14,14 @@ export class UsuarioServiceService {
   private apiUrl: string = 'api/Usuarios/'; 
 
   constructor(private http:HttpClient) { }
+  
     //Despliega la lista
     getUsuarios():Observable<Usuarios[]>{
       return this.http.get<Usuarios[]>(`${this.appUrl}${this.apiUrl}ConsultarUsuarios`);
     }
     //despliega un usuario
     getUsuario(id: number):Observable<Usuarios>{
-      return this.http.get<Usuarios>(`${this.appUrl}${this.apiUrl}ConsultarUsuarios?id=${id}`);
+      return this.http.get<Usuarios>(`${this.appUrl}${this.apiUrl}ConsultarUsuario?id=${id}`);
     }
     
     deleteUsuario(id: number): Observable<any> {
@@ -31,7 +32,15 @@ export class UsuarioServiceService {
       return this.http.post<Usuarios>(`${this.appUrl}${this.apiUrl}RegistrarUsuario`, usuario);
     }
 
-    updateUsuario(id: number, usuario: Usuarios): Observable<void> {
-      return this.http.put<void>(`${this.appUrl}${this.apiUrl}ModificarUsuario?id=${id}`, usuario);
+    updateUsuario(id: number, usuario: Usuarios): Observable<any> {
+      return this.http.put<any>(`${this.appUrl}${this.apiUrl}ModificarUsuario?id=${id}`, usuario);
+    }
+
+    iniciarSesion(usuario: string, contraseña: string): Observable<Usuarios> {
+      const params = new HttpParams()
+        .set('usuario1', usuario)
+        .set('contraseña', contraseña);
+  
+      return this.http.put<Usuarios>(`${this.appUrl}${this.apiUrl}InicioSesion`, null, { params });
     }
 }
