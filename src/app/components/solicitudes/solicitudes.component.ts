@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, Injectable, OnInit, ViewChild } from '@angular/core';
-import { SharedModule } from '../../shared/shared.module';
 import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -21,8 +20,9 @@ import { SolicitudServiceService } from '../../services/solicitud-service.servic
 import { AcreditServiceService } from '../../services/acredit-service.service';
 import { CreditoOtorgado, CreditosResponse } from '../../models/acreditados';
 import { Solicitudes, SolReno } from '../../models/solicitudes';
-import FileSaver from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import { AuthGuard } from '../../guards/auth.guard';
+import { SharedModule } from '../../shared/shared.module';
 
 @Injectable({
   providedIn: 'root'
@@ -425,7 +425,7 @@ private crearFilaTotalGeneral(resumen: any): CreditoOtorgado {
       type: 'application/octet-stream',
     });
   
-    FileSaver.saveAs(blob, 'reporte-tablas.xlsx');
+    saveAs(blob, 'reporte-tablas.xlsx');
   }  
   
   
