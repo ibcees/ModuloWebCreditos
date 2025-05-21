@@ -24,6 +24,7 @@ import {MatMenuModule} from '@angular/material/menu';
 //componentes
 import { SpinnerComponent } from './spinner/spinner.component';
 import{ HttpClientModule } from '@angular/common/http';
+import { RoutingModule } from '../app.routes';
 
 
 @NgModule({

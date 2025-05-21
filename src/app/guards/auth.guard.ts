@@ -2,6 +2,7 @@ import { CanActivateFn, ActivatedRouteSnapshot, RouterStateSnapshot,Router, CanA
 import { UsuarioServiceService } from '../services/usuario-service.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { RoutingModule } from '../app.routes';
 
 @Injectable({
   providedIn: 'root'

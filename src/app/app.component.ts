@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
+import { RoutingModule } from './app.routes';
 
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 import { AcreditadosComponent } from './components/acreditados/acreditados.component';

@@ -1,4 +1,4 @@
 export const environment = {
-    production: false,
-    endpoint:'http://localhost:5008/'
+    production: true,
+    endpoint:'https://gestioncreditoapi.becasycredito.gob.mx/'
 };
